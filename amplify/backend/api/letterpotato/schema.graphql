@@ -1,0 +1,14 @@
+type Room @model {
+	roomCode: String!
+	letters: [String]
+	foundWords: [String]
+}
+
+type Mutation {
+	retrieveRoom(roomCode: String): Room @function(name: "retrieveRoom-${env}")
+	validateWord(
+		currentGuess: String
+		playerName: String
+		roomCode: String
+	): String @function(name: "validateWord-${env}")
+}

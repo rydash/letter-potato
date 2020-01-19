@@ -1,0 +1,12 @@
+{
+    "permissions": {
+        "function": {
+            "retrieveRoom": [
+                "read"
+            ],
+            "saveWord": [
+                "read"
+            ]
+        }
+    }
+}

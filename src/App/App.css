@@ -1,0 +1,13 @@
+.App-header {
+	background-color: #4254f4;
+	box-sizing: border-box;
+	color: #fff;
+	display: block;
+	height: 50px;
+	font-family: Helvetica, 'sans-serif';
+	font-size: 32px;
+	font-weight: 700;
+	padding-top: 10px;
+	text-align: center;
+	z-index: 10;
+}

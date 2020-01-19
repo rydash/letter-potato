@@ -1,0 +1,15 @@
+{
+    "permissions": {
+        "storage": {
+            "RoomStorage": [
+                "create",
+                "update"
+            ]
+        },
+        "function": {
+            "retrieveRoom": [
+                "read"
+            ]
+        }
+    }
+}

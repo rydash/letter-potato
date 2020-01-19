@@ -1,0 +1,67 @@
+.RoomEntry-submit {
+	border: 0;
+	border-width: 0;
+	box-sizing: border-box;
+	color: #000;
+	font-family: Helvetica, 'sans-serif';
+	font-size: 18px;
+	font-weight: 700;
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 15px 15px 0;
+}
+
+.RoomEntry-submit label {
+	display: inline-block;
+	margin-bottom: 5px;
+	padding-left: 12px;
+}
+
+.RoomEntry-submit input[type='text'] {
+	background-color: #e0e0e0;
+	border: 0 solid;
+	border-radius: 12px;
+	box-sizing: border-box;
+	font: inherit;
+	height: 34px;
+	margin-bottom: 15px;
+	overflow: visible;
+	padding: 6px 12px;
+	text-transform: uppercase;
+	width: 100%;
+}
+
+.RoomEntry-submit input[type='submit'] {
+	background: linear-gradient(
+		45deg,
+		rgba(125, 185, 232, 0) 25%,
+		rgba(112, 164, 237, 0.7) 32%,
+		#5d86f4 42%,
+		#4761fc 54%,
+		#3f55fe 58%
+	);
+	background-size: 800% 100%;
+	background-position: 100%;
+	border-radius: 12px;
+	border-width: 0;
+	box-shadow: 2px 4px 0 0 #0e167d;
+	color: #fff;
+	cursor: pointer;
+	display: block;
+	font: inherit;
+	height: 48px;
+	overflow: visible;
+	margin: 15px auto;
+	max-width: 330px;
+	min-width: 70px;
+	transition: color 1s, background-position 1s, box-shadow 1s;
+	width: 90%;
+}
+
+.RoomEntry-submit input[type='submit']:disabled {
+	background-color: #e0e0e0;
+	background-position: 0%;
+	box-shadow: 2px 4px 0 0 #505050;
+	color: #505050;
+	transition: color 1s, background-position 1s, box-shadow 1s;
+}
