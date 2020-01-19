@@ -24,7 +24,7 @@ existing set of letters plus any words found by other players.
 ## Contributing
 
 ### Getting in touch
-Letter Potato tracks bugs and feature requests using [GitHub Issues](TODO). Drop us a line there!
+Letter Potato tracks bugs and feature requests using [GitHub Issues](https://github.com/rydash/letter-potato/issues). Drop us a line there!
 
 Want to fix it yourself? Great! Fork this repo, write some code, and submit a pull request.
 
@@ -39,9 +39,7 @@ Testing AWS Lambdas locally requires Node 10 LTS or higher.
 
 ### Building and Deploying
 
-Coming soon!
-
-<!-- TODO: Add Amplify Console button like so: [![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=[GITHUB LINK]) -->
+[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/rydash/letter-potato)
 
 ### Available Scripts
 
@@ -75,7 +73,7 @@ the Free Software Foundation, either version 3 of the License, or
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-[included GNU General Public License](TODO) for more details.
+[included GNU General Public License](./LICENSE.md) for more details.
 
 ## Credits
 Created by [Ryan McGill](mailto:ryanalanmcgill+letterpotato@gmail.com). Inspired by party games developed by [Jackbox Games](https://jackboxgames.com/games/).
