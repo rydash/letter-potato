@@ -2,7 +2,7 @@
 
 Make the longest word you can with a limited set a letters!
 
-[Play here.](TODO)
+[Play here.](https://master.d1q0ulek6zddn4.amplifyapp.com/)
 
 ## Gameplay
 
@@ -39,7 +39,9 @@ Testing AWS Lambdas locally requires Node 10 LTS or higher.
 
 ### Building and Deploying
 
-[![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/rydash/letter-potato)
+Deployments occur automatically through the [AWS Amplify Console](https://console.aws.amazon.com/amplify/home) for each new commit on the `master` branch.
+
+Open an issue if you'd like further deployment options!
 
 ### Available Scripts
 
