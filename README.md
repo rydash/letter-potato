@@ -21,10 +21,24 @@ create a room, you'll start with a new set of eight letters and no discovered wo
 If you enter a room code that someone else used before, you'll join a game with an
 existing set of letters plus any words found by other players.
 
+## This game is a Work In Progress!
+
+This game isn't finished and doesn't look super nice yet!
+Here are the major things under development:
+* Updating the found words in the game room in real time
+* Styling the game room, making desired action and result of guesses more obvious
+    * Displaying the game room's letters in a big 2x4 grid
+* Preventing guesses while a previous guess is still being validated
+* Various development chores
+    * Adding documentation
+    * Adding PropTypes
+    * Adding Jest unit tests
+    * Cleaning up CSS
+
 ## Contributing
 
 ### Getting in touch
-Letter Potato tracks bugs and feature requests using [GitHub Issues](https://github.com/rydash/letter-potato/issues). Drop us a line there!
+Letter Potato tracks bugs and feature requests using [GitHub Issues](https://github.com/rydash/letter-potato/issues). Drop a line there!
 
 Want to fix it yourself? Great! Fork this repo, write some code, and submit a pull request.
 
