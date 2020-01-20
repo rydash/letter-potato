@@ -3,10 +3,14 @@ const AWS = require('aws-sdk');
 const region = process.env.REGION;
 AWS.config.update({ region });
 
-exports.handler = async event => {
+exports.handler = async () => {
 	return makeLetters();
 };
 
+/**
+ * Creates a set of letters for a new room.
+ * @returns {Array<String>}
+ */
 function makeLetters() {
 	// TODO: Maybe take these from the event for easy/medium/hard games?
 	const CONSONANT_AMOUNT = 6;
@@ -40,6 +44,12 @@ function makeLetters() {
 	return vowels.concat(consonants);
 }
 
+/**
+ * Randomly generates an amount of letters from a given list.
+ * @param {Number} length How many letters to generate
+ * @param {Array<String>} letters Full set of letters to choose from
+ * @returns {Array<String>} Random subset of original `letters` collection with given `length`
+ */
 function getRandomLetters(length, letters) {
 	let randomLetters = [];
 	for (let i = length; i > 0; i = i - 1) {

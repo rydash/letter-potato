@@ -19,6 +19,17 @@ const ddbTableName = storageRoomStorageName;
 
 const lambda = new AWS.Lambda({ region });
 
+/**
+ * Saves a new word for a game room to the database.
+ * Also indicates if a word is new, old, longest, or tied for longest.
+ * @param {Object} event
+ * @param {Object} event.arguments
+ * @param {String} event.arguments.currentGuess Word submitted by the player
+ * @param {String} event.arguments.playerName Non-unique identifier for the player
+ * @throws Will throw when the database cannot be reached to store a new word.
+ * @returns {String} Constant values indicating something about the input.
+ *     (e.g. "OLD_WORD", "NEW_WORD", "LONGEST_WORD", and so on.)
+ */
 exports.handler = async event => {
 	const { currentGuess, playerName } = event.arguments;
 

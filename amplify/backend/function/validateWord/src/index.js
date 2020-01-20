@@ -14,6 +14,15 @@ AWS.config.update({ region });
 
 const lambda = new AWS.Lambda({ region });
 
+/**
+ * Verifies that a player's guess is a valid word using only the letters assigned to the game room.
+ * @param {Object} event
+ * @param {Object} event.arguments
+ * @param {String} event.arguments.currentGuess Text input submitted by the player
+ * @throws Will throw when the game room doesn't contain a set of letters to validate against.
+ * @returns {String} Constant values indicating something about the input or if an error occurred.
+ *     (e.g. "INVALID_WORD", "ERROR", and so on.)
+ */
 exports.handler = async event => {
 	const { currentGuess } = event.arguments;
 
@@ -51,6 +60,13 @@ exports.handler = async event => {
 	return 'INVALID_WORD';
 };
 
+/**
+ * Verifies that a word appears in an English dictionary, and does not
+ * contain any characters outside the provided letters.
+ * @param {String} word
+ * @param {Array<String>} letters
+ * @returns {Boolean}
+ */
 async function isValidWord(word, letters) {
 	// Make sure the word only contains letters from the room
 	const lettersRegex = RegExp(`^[${letters.join('')}]+$`, 'i');
@@ -58,7 +74,7 @@ async function isValidWord(word, letters) {
 
 	if (containsValidLetters) {
 		// Make sure the word is a valid English word.
-		// Loading a full dictionary in this Lambda is computationally very expensive.
+		// Loading a full dictionary in this Lambda is slow and memory hungry.
 		// So, we rely on the external Datamuse API instead.
 		// https://www.datamuse.com/api/
 		//

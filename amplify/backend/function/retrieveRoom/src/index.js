@@ -19,6 +19,14 @@ const ddbTableName = storageRoomStorageName;
 
 const lambda = new AWS.Lambda({ region });
 
+/**
+ * Finds a game room and returns that room's information for a given room code.
+ * If a room does not exist at that room code, creates a new room.
+ * @param {Object} event
+ * @param {Object} event.arguments
+ * @param {String} event.arguments.roomCode Four-letter code for the desired room
+ * @returns {Object} Room data
+ */
 exports.handler = async event => {
 	const { roomCode } = event.arguments;
 
@@ -41,12 +49,19 @@ exports.handler = async event => {
 	}
 
 	if (!room || !room.letters) {
-		return await createRoom(event);
+		room = await createRoom(event);
 	}
 
 	return room;
 };
 
+/**
+ * Makes an entirely new game room.
+ * @param {Object} event
+ * @param {Object} event.arguments
+ * @param {String} event.arguments.roomCode Four-letter code for the desired room
+ * @returns {Object} Room with newly-generated letters
+ */
 async function createRoom(event) {
 	const { roomCode } = event.arguments;
 
@@ -73,7 +88,7 @@ async function createRoom(event) {
 
 	try {
 		await ddb.put(params).promise();
-		// `put` can't return the item it just saved, so we need to go get it
+		// `put` can't return the room it just saved, so we need to go get it
 		const { Item: room } = await ddb.get(params).promise();
 		return room;
 	} catch (err) {

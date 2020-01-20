@@ -84,7 +84,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-letter-potato-develop-121443-deployment",
-					"S3Key": "amplify-builds/retrieveRoom-385270794e5377595a72-build.zip"
+					"S3Key": "amplify-builds/retrieveRoom-65763761356252735533-build.zip"
 				}
 			}
 		},
