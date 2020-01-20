@@ -91,12 +91,12 @@ class GameRoom extends React.Component {
 	};
 
 	renderRoomInfo = () => {
-		const { playerName, roomCode } = this.state;
+		const { playerName, roomCode } = this.props;
 
 		return (
 			<div className="GameRoom-roomInfo">
-				Room Code: {roomCode}
-				Name: {playerName}
+				<p>Room Code: {roomCode}</p>
+				<p>Name: {playerName}</p>
 			</div>
 		);
 	};
@@ -108,7 +108,7 @@ class GameRoom extends React.Component {
 			// TODO: Display this as a fancy grid with big letters
 			<div className="GameRoom-letters">
 				Letters: {letters}
-				<button onClick={this.shuffleLetters}>Shuffle</button>
+				<button onClick={this.shuffleLetters}>SHUFFLE</button>
 			</div>
 		);
 	};
