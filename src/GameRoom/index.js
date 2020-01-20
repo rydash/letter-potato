@@ -197,7 +197,7 @@ class GameRoom extends React.Component {
 
 		return isLoading ? (
 			// TODO: Center this with CSS
-			<ClimbingBlockLoader color="#3f55fe" loading={isLoading} />
+			<ClimbingBlockLoader color="#d38b40" loading={isLoading} />
 		) : (
 			<div className="GameRoom">
 				{this.renderRoomInfo()}
