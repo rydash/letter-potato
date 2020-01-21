@@ -58,7 +58,7 @@ button, input[type='submit'] {
 	width: 90%;
 }
 
-input[type='submit']:disabled {
+button:disabled, input[type='submit']:disabled {
 	background-color: #e0e0e0;
 	background-position: 0%;
 	box-shadow: 2px 4px 0 0 #505050;

@@ -2,7 +2,7 @@
 
 Make the longest word you can with a limited set a letters!
 
-[Play here.](https://master.d1q0ulek6zddn4.amplifyapp.com/)
+## [**Start playing here!**](https://master.d1q0ulek6zddn4.amplifyapp.com/)
 
 ## Gameplay
 
@@ -25,10 +25,10 @@ existing set of letters plus any words found by other players.
 
 This game isn't finished and doesn't look super nice yet!
 Here are the major things under development:
-* Updating the found words in the game room in real time
 * Styling the game room, making desired action and result of guesses more obvious
     * Displaying the game room's letters in a big 2x4 grid
 * Preventing guesses while a previous guess is still being validated
+* Returning to a recently-visited room after refreshing the browser
 * Various development chores
     * Adding documentation
     * Adding PropTypes
