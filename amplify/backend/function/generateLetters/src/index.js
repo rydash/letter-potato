@@ -13,8 +13,8 @@ exports.handler = async () => {
  */
 function makeLetters() {
 	// TODO: Maybe take these from the event for easy/medium/hard games?
-	const CONSONANT_AMOUNT = 6;
-	const VOWEL_AMOUNT = 2;
+	const CONSONANT_AMOUNT = 5;
+	const VOWEL_AMOUNT = 3;
 
 	const consonants = getRandomLetters(CONSONANT_AMOUNT, [
 		'B',
