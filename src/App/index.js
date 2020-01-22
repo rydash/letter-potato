@@ -1,9 +1,16 @@
-import React from 'react';
 import './App.css';
+
+import React from 'react';
 
 import RoomEntry from '../RoomEntry';
 import GameRoom from '../GameRoom';
 
+import { version } from '../../package.json';
+
+// TODO: Maybe this whole component switching can be done with react-router.
+// That way we can do cool things like track room history, use URL
+// slugs to get someone right into a room, and other cool-sounding
+// navigation things.
 /**
  * The root component for Letter Potato.
  * Mounts either the game entry screen or the game room
@@ -48,6 +55,7 @@ class App extends React.Component {
 						onRoomCodeChange={this.handleRoomCodeChange}
 					/>
 				)}
+				<span className="App-version">v{version}</span>
 			</div>
 		);
 	}

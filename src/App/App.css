@@ -11,3 +11,12 @@
 	text-align: center;
 	z-index: 10;
 }
+
+.App-version {
+	bottom: 0;
+	color: #505050;
+	font-size: 12px;
+	padding: 1em;
+	position: fixed;
+	right: 0;
+}
