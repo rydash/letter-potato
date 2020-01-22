@@ -34,7 +34,8 @@ class GameRoom extends React.Component {
 			currentGuess: '',
 			foundWords: [],
 			isRoomLoading: true,
-			isRoomUpdating: true,
+			isRoomSubmitting: false,
+			isRoomUpdating: false,
 			letters: [],
 			submittedGuess: '',
 			result: '',
@@ -45,7 +46,7 @@ class GameRoom extends React.Component {
 		API.configure(awsconfig);
 		await this.getRoom();
 
-		this.setState({ isRoomLoading: false, isRoomUpdating: false });
+		this.setState({ isRoomLoading: false });
 
 		this.setUpdateInterval();
 	}
@@ -139,6 +140,8 @@ class GameRoom extends React.Component {
 
 		const submission = { currentGuess, playerName, roomCode };
 
+		this.setState({ isRoomSubmitting: true });
+
 		// TODO: Return early if currentGuess already present in local foundWords.
 		// This should reduce invocations of the validateWord Lambda.
 
@@ -154,7 +157,7 @@ class GameRoom extends React.Component {
 				await this.updateFoundWords();
 			}
 
-			this.setState({ result, submittedGuess: currentGuess });
+			this.setState({ currentGuess: '', result, submittedGuess: currentGuess });
 		} catch (err) {
 			// TODO: Make erroring more pronounced, allow a user to reload and recover
 			console.error(
@@ -163,6 +166,8 @@ class GameRoom extends React.Component {
 			);
 			this.setState({ result: ERROR });
 		}
+
+		this.setState({ isRoomSubmitting: false });
 	};
 
 	renderRoomInfo = () => {
@@ -182,11 +187,11 @@ class GameRoom extends React.Component {
 
 		return (
 			<>
-			<div className="GameRoom-letters">
+				<div className="GameRoom-letters">
 					{letters.map(letter => (
 						<div key={letter} className="GameRoom-letter">
 							{letter}
-			</div>
+						</div>
 					))}
 				</div>
 				<button onClick={this.shuffleLetters}>SHUFFLE</button>
@@ -195,51 +200,62 @@ class GameRoom extends React.Component {
 	};
 
 	renderResult = () => {
-		const { result, submittedGuess } = this.state;
+		const {
+			currentGuess,
+			result,
+			submittedGuess,
+			isRoomSubmitting,
+		} = this.state;
 
 		let resultText = '';
-		switch (result) {
-			case INVALID_WORD:
+
+		if (isRoomSubmitting) {
+			resultText = `Guessing ${currentGuess}...`;
+		} else {
+			switch (result) {
+				case INVALID_WORD:
 					resultText = `${submittedGuess} isn't a valid guess! Try again.`;
-				break;
-			case OLD_WORD:
-				// TODO: Name who found this word previously.
-				resultText = `${submittedGuess} was already guessed by someone else!`;
-				break;
-			case NEW_WORD:
-				resultText = `${submittedGuess} is new, but not the longest word!`;
-				break;
-			case TIED_WORD:
-				resultText = `${submittedGuess} is new, and tied for the longest word!`;
-				break;
-			case LONGEST_WORD:
-				resultText = `${submittedGuess} is the longest word found so far!`;
-				break;
-			case ERROR:
-				resultText = "Your guess couldn't be processed. Try again!";
-				break;
-			default:
-				return null;
+					break;
+				case OLD_WORD:
+					// TODO: Name who found this word previously.
+					resultText = `${submittedGuess} was already guessed by someone else!`;
+					break;
+				case NEW_WORD:
+					resultText = `${submittedGuess} is new, but not the longest word!`;
+					break;
+				case TIED_WORD:
+					resultText = `${submittedGuess} is new, and tied for the longest word!`;
+					break;
+				case LONGEST_WORD:
+					resultText = `${submittedGuess} is the longest word found so far!`;
+					break;
+				case ERROR:
+					resultText = "Your guess couldn't be processed. Try again!";
+					break;
+				default:
+					return null;
+			}
 		}
 
 		return <div className="GameRoom-result">{resultText}</div>;
 	};
 
 	renderGuess = () => {
-		const { currentGuess } = this.state;
+		const { currentGuess, isRoomSubmitting } = this.state;
 
 		return (
-				<form onSubmit={this.handleSubmit}>
-					<fieldset className="GameRoom-submit">
-						<input
+			<form onSubmit={this.handleSubmit}>
+				<fieldset className="GameRoom-submit">
+					<input
 						className="GameRoom-submit-input"
-							name="roomCode"
-							type="text"
-							onChange={this.handleGuessChange}
-							pattern="[A-Za-z]+"
+						name="roomCode"
+						type="text"
+						disabled={isRoomSubmitting}
+						onChange={this.handleGuessChange}
+						pattern="[A-Za-z]+"
 						placeholder="Type a word!"
-							value={currentGuess}
-						/>
+						value={currentGuess}
+					/>
 					{this.renderResult()}
 					{isRoomSubmitting ? (
 						<div className="loader">
@@ -248,8 +264,8 @@ class GameRoom extends React.Component {
 					) : (
 						<input type="submit" disabled={!currentGuess} value="GUESS" />
 					)}
-					</fieldset>
-				</form>
+				</fieldset>
+			</form>
 		);
 	};
 
@@ -260,7 +276,7 @@ class GameRoom extends React.Component {
 
 		return (
 			<>
-			<div className="GameRoom-foundWords">
+				<div className="GameRoom-foundWords">
 					<span className="GameRoom-foundWordHeader">Found Words</span>
 					<span className="GameRoom-finderHeader">Finder</span>
 					{foundWordsData
@@ -278,13 +294,13 @@ class GameRoom extends React.Component {
 						<BeatLoader color={LOADING_COLOR} />
 					</div>
 				) : (
-				<button
-					className="GameRoom-updateRoom"
-					disabled={isRoomUpdating}
-					onClick={this.updateFoundWords}
-				>
+					<button
+						className="GameRoom-updateRoom"
+						disabled={isRoomUpdating}
+						onClick={this.updateFoundWords}
+					>
 						UPDATE
-				</button>
+					</button>
 				)}
 			</>
 		);
@@ -299,12 +315,12 @@ class GameRoom extends React.Component {
 					<div className="loader">
 						<BeatLoader color={LOADING_COLOR} />
 					</div>
-		) : (
+				) : (
 					<>
-				{this.renderRoomInfo()}
-				{this.renderLetters()}
-				{this.renderGuess()}
-				{this.renderFoundWords()}
+						{this.renderRoomInfo()}
+						{this.renderLetters()}
+						{this.renderGuess()}
+						{this.renderFoundWords()}
 					</>
 				)}
 			</div>

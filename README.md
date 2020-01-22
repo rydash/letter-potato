@@ -25,7 +25,6 @@ existing set of letters plus any words found by other players.
 
 This game isn't finished and doesn't look super nice yet!
 Here are the major things under development:
-* Preventing guesses while a previous guess is still being validated
 * Returning to a recently-visited room after refreshing the browser
 * Various development chores
     * Adding documentation

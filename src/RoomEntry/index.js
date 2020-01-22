@@ -36,6 +36,7 @@ class RoomEntry extends React.Component {
 							onChange={onRoomCodeChange}
 							pattern="[A-Za-z]{4}"
 							placeholder="ENTER 4-LETTER CODE"
+							required
 							value={roomCode}
 						/>
 						<label htmlFor="playerName">NAME</label>
@@ -45,6 +46,7 @@ class RoomEntry extends React.Component {
 							maxLength="12"
 							onChange={onPlayerNameChange}
 							placeholder="ENTER YOUR NAME"
+							required
 							value={playerName}
 						/>
 						<input
