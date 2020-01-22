@@ -1,7 +1,7 @@
 import './GameRoom.css';
 
 import { API, graphqlOperation } from 'aws-amplify';
-import ClimbingBlockLoader from 'react-spinners/ClimbingBoxLoader';
+import BeatLoader from 'react-spinners/BeatLoader';
 import React from 'react';
 import { string } from 'prop-types';
 
@@ -73,7 +73,7 @@ class GameRoom extends React.Component {
 	 */
 	clearUpdateInterval = () => {
 		clearInterval(this.updateInterval);
-	}
+	};
 
 	/**
 	 * Gets all information about the current room.
@@ -170,8 +170,9 @@ class GameRoom extends React.Component {
 
 		return (
 			<div className="GameRoom-roomInfo">
-				<p>Room Code: {roomCode}</p>
-				<p>Name: {playerName}</p>
+				<span className="GameRoom-playerName">{playerName}</span>
+				<span className="GameRoom-instruction">Find the longest word!</span>
+				<span className="GameRoom-roomCode">{roomCode}</span>
 			</div>
 		);
 	};
@@ -180,11 +181,16 @@ class GameRoom extends React.Component {
 		const { letters } = this.state;
 
 		return (
-			// TODO: Display this as a fancy grid with big letters
+			<>
 			<div className="GameRoom-letters">
-				Letters: {letters}
-				<button onClick={this.shuffleLetters}>SHUFFLE</button>
+					{letters.map(letter => (
+						<div key={letter} className="GameRoom-letter">
+							{letter}
 			</div>
+					))}
+				</div>
+				<button onClick={this.shuffleLetters}>SHUFFLE</button>
+			</>
 		);
 	};
 
@@ -194,7 +200,7 @@ class GameRoom extends React.Component {
 		let resultText = '';
 		switch (result) {
 			case INVALID_WORD:
-				resultText = `${submittedGuess} isn't a valid word! Try again.`;
+					resultText = `${submittedGuess} isn't a valid guess! Try again.`;
 				break;
 			case OLD_WORD:
 				// TODO: Name who found this word previously.
@@ -222,28 +228,28 @@ class GameRoom extends React.Component {
 	renderGuess = () => {
 		const { currentGuess } = this.state;
 
-		// TODO: Style this a bunch
 		return (
-			<div className="GameRoom-submit">
 				<form onSubmit={this.handleSubmit}>
 					<fieldset className="GameRoom-submit">
 						<input
+						className="GameRoom-submit-input"
 							name="roomCode"
 							type="text"
 							onChange={this.handleGuessChange}
 							pattern="[A-Za-z]+"
-							placeholder="Guess an English word!"
-							title="Letters only, please."
+						placeholder="Type a word!"
 							value={currentGuess}
 						/>
-						<input
-							type="submit"
-							disabled={currentGuess.length < 0}
-							value="GUESS"
-						/>
+					{this.renderResult()}
+					{isRoomSubmitting ? (
+						<div className="loader">
+							<BeatLoader color={LOADING_COLOR} />
+						</div>
+					) : (
+						<input type="submit" disabled={!currentGuess} value="GUESS" />
+					)}
 					</fieldset>
 				</form>
-			</div>
 		);
 	};
 
@@ -253,45 +259,54 @@ class GameRoom extends React.Component {
 		const foundWordsData = foundWords.map(wordData => JSON.parse(wordData));
 
 		return (
+			<>
 			<div className="GameRoom-foundWords">
+					<span className="GameRoom-foundWordHeader">Found Words</span>
+					<span className="GameRoom-finderHeader">Finder</span>
+					{foundWordsData
+						.sort((a, b) => b.word.length - a.word.length)
+						.map(({ playerName, word }) => (
+							<React.Fragment key={word}>
+								<div className="GameRoom-foundWord">{word}</div>
+								<div className="GameRoom-finder">{playerName}</div>
+							</React.Fragment>
+						))}
+				</div>
+
+				{isRoomUpdating ? (
+					<div className="loader">
+						<BeatLoader color={LOADING_COLOR} />
+					</div>
+				) : (
 				<button
 					className="GameRoom-updateRoom"
 					disabled={isRoomUpdating}
 					onClick={this.updateFoundWords}
 				>
-					REFRESH
+						UPDATE
 				</button>
-				Words found so far:
-				{isRoomUpdating ? (
-					<ClimbingBlockLoader color={LOADING_COLOR} loading={isRoomUpdating} />
-				) : (
-					foundWordsData
-						.sort((a, b) => b.word.length - a.word.length)
-						// TODO: Used fixed-width font for found words, for visual niceness
-						.map(({ playerName, word }) => (
-							<p key={word}>
-								<span className="GameRoom-foundWord">{word}</span> by{' '}
-								{playerName}
-							</p>
-						))
 				)}
-			</div>
+			</>
 		);
 	};
 
 	render() {
 		const { isRoomLoading } = this.state;
 
-		return isRoomLoading ? (
-			// TODO: Center this with CSS
-			<ClimbingBlockLoader color={LOADING_COLOR} loading={isRoomLoading} />
-		) : (
+		return (
 			<div className="GameRoom">
+				{isRoomLoading ? (
+					<div className="loader">
+						<BeatLoader color={LOADING_COLOR} />
+					</div>
+		) : (
+					<>
 				{this.renderRoomInfo()}
 				{this.renderLetters()}
-				{this.renderResult()}
 				{this.renderGuess()}
 				{this.renderFoundWords()}
+					</>
+				)}
 			</div>
 		);
 	}
