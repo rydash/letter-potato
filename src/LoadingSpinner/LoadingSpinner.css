@@ -1,0 +1,8 @@
+/*
+	Centering react-spinners without using its css prop can be tricky.
+	https://github.com/davidhu2000/react-spinners/issues/53
+*/
+.LoadingSpinner {
+	margin-top: 10px;
+	text-align: center;
+}

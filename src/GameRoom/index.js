@@ -1,7 +1,6 @@
 import './GameRoom.css';
 
 import { API, graphqlOperation } from 'aws-amplify';
-import BeatLoader from 'react-spinners/BeatLoader';
 import React from 'react';
 import { string } from 'prop-types';
 
@@ -10,10 +9,11 @@ import shuffle from 'lodash/shuffle';
 import awsconfig from '../aws-exports';
 import { retrieveRoom, validateWord } from '../graphql/mutations';
 
+import LoadingSpinner from '../LoadingSpinner';
+
 import {
 	ERROR,
 	INVALID_WORD,
-	LOADING_COLOR,
 	LONGEST_WORD,
 	NEW_WORD,
 	OLD_WORD,
@@ -258,9 +258,7 @@ class GameRoom extends React.Component {
 					/>
 					{this.renderResult()}
 					{isRoomSubmitting ? (
-						<div className="loader">
-							<BeatLoader color={LOADING_COLOR} />
-						</div>
+						<LoadingSpinner />
 					) : (
 						<input type="submit" disabled={!currentGuess} value="GUESS" />
 					)}
@@ -290,9 +288,7 @@ class GameRoom extends React.Component {
 				</div>
 
 				{isRoomUpdating ? (
-					<div className="loader">
-						<BeatLoader color={LOADING_COLOR} />
-					</div>
+					<LoadingSpinner />
 				) : (
 					<button
 						className="GameRoom-updateRoom"
@@ -312,9 +308,7 @@ class GameRoom extends React.Component {
 		return (
 			<div className="GameRoom">
 				{isRoomLoading ? (
-					<div className="loader">
-						<BeatLoader color={LOADING_COLOR} />
-					</div>
+					<LoadingSpinner />
 				) : (
 					<>
 						{this.renderRoomInfo()}

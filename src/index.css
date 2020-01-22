@@ -67,12 +67,3 @@ label {
 	font-size: 18px;
 	font-weight: 700;
 }
-
-/*
-	Centering react-spinners without using its css prop can be tricky.
-	https://github.com/davidhu2000/react-spinners/issues/53
-*/
-.loader {
-	margin-top: 10px;
-	text-align: center;
-}
