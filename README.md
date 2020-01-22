@@ -2,7 +2,7 @@
 
 Make the longest word you can with a limited set a letters!
 
-## [**Start playing here!**](https://master.d1q0ulek6zddn4.amplifyapp.com/)
+## [**Start playing here!**](https://letter-potato.ryanmcgill.io/)
 
 ## Gameplay
 
