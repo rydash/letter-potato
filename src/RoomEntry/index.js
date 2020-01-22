@@ -1,5 +1,7 @@
-import React from 'react';
 import './RoomEntry.css';
+
+import React from 'react';
+import { func, string } from 'prop-types';
 
 /**
  * A form for a player to enter their name and a room code.
@@ -58,7 +60,11 @@ class RoomEntry extends React.Component {
 }
 
 RoomEntry.propTypes = {
-	/* TODO */
+	playerName: string.isRequired,
+	roomCode: string.isRequired,
+	onEnterRoom: func.isRequired,
+	onPlayerNameChange: func.isRequired,
+	onRoomCodeChange: func.isRequired,
 };
 
 export default RoomEntry;

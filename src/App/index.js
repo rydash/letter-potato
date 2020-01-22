@@ -53,8 +53,6 @@ class App extends React.Component {
 	}
 }
 
-App.propTypes = {
-	/* TODO */
-};
+App.propTypes = {};
 
 export default App;

@@ -1,8 +1,9 @@
 import './GameRoom.css';
 
 import { API, graphqlOperation } from 'aws-amplify';
-import React from 'react';
 import ClimbingBlockLoader from 'react-spinners/ClimbingBoxLoader';
+import React from 'react';
+import { string } from 'prop-types';
 
 import shuffle from 'lodash/shuffle';
 
@@ -297,7 +298,8 @@ class GameRoom extends React.Component {
 }
 
 GameRoom.propTypes = {
-	/* TODO */
+	playerName: string.isRequired,
+	roomCode: string.isRequired,
 };
 
 export default GameRoom;

@@ -31,7 +31,6 @@ Here are the major things under development:
 * Returning to a recently-visited room after refreshing the browser
 * Various development chores
     * Adding documentation
-    * Adding PropTypes
     * Adding Jest unit tests
     * Cleaning up CSS
 
