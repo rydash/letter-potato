@@ -132,6 +132,18 @@ class GameRoom extends React.Component {
 		this.setState({ currentGuess: event.target.value.toUpperCase() });
 	};
 
+	/**
+	 * Allow users to tap each letter in the grid to build a guess.
+	 * This doesn't exclude keyboard input, but may make it easier to play on mobile.
+	 * @param {String} letter
+	 * @returns {undefined}
+	 */
+	handleLetterPress = letter => {
+		const { currentGuess } = this.state;
+
+		this.setState({ currentGuess: currentGuess + letter });
+	};
+
 	handleSubmit = async event => {
 		event.preventDefault();
 
@@ -187,14 +199,18 @@ class GameRoom extends React.Component {
 
 		return (
 			<>
+				<button onClick={this.shuffleLetters}>SHUFFLE</button>
 				<div className="GameRoom-letters">
 					{letters.map(letter => (
-						<div key={letter} className="GameRoom-letter">
+						<button
+							key={letter}
+							className="GameRoom-letter"
+							onClick={this.handleLetterPress.bind(this, letter)}
+						>
 							{letter}
-						</div>
+						</button>
 					))}
 				</div>
-				<button onClick={this.shuffleLetters}>SHUFFLE</button>
 			</>
 		);
 	};

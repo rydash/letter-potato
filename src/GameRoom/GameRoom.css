@@ -30,9 +30,6 @@
 }
 
 .GameRoom-letter {
-	align-items: center;
-	border: 2px solid #d38b40;
-	display: flex;
 	font-family: 'Courier New', Courier, monospace;
 	font-size: 2em;
 	justify-content: center;
