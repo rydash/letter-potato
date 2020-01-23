@@ -2,6 +2,7 @@ import './GameRoom.css';
 
 import { API, graphqlOperation } from 'aws-amplify';
 import React from 'react';
+import Modal from 'react-modal';
 import { string } from 'prop-types';
 
 import shuffle from 'lodash/shuffle';
@@ -19,6 +20,7 @@ import {
 	OLD_WORD,
 	TIED_WORD,
 	UPDATE_INTERVAL_MS,
+	UPDATE_MAXIMUM_RETRIES,
 } from '../constants';
 
 /**
@@ -33,12 +35,15 @@ class GameRoom extends React.Component {
 		this.state = {
 			currentGuess: '',
 			foundWords: [],
+			// TODO: Refactor these Booleans into a roomState Object?
 			isRoomLoading: true,
 			isRoomSubmitting: false,
+			isRoomTimedOut: false,
 			isRoomUpdating: false,
 			letters: [],
 			submittedGuess: '',
 			result: '',
+			updateCounter: 0,
 		};
 	}
 
@@ -60,8 +65,6 @@ class GameRoom extends React.Component {
 	 * @returns {undefined}
 	 */
 	setUpdateInterval = () => {
-		// TODO: Probably should stop running this after a set number of invocations.
-		// Similar to Netflix's "Are you still there?" kind of interruption.
 		this.updateInterval = setInterval(
 			this.updateFoundWords,
 			UPDATE_INTERVAL_MS
@@ -93,30 +96,51 @@ class GameRoom extends React.Component {
 	};
 
 	/**
+	 * Prepares the room for active updates.
+	 * @returns {undefined}
+	 */
+	resetTimeout = () => {
+		this.setState(
+			{ isRoomTimedOut: false, updateCounter: 0 },
+			this.updateFoundWords
+		);
+	};
+
+	/**
 	 * Gets the current list of found words for the current room.
 	 * @returns {undefined}
 	 */
 	updateFoundWords = () => {
+		const { updateCounter } = this.state;
+
 		// Clear the update interval to avoid back-to-back requests.
 		this.clearUpdateInterval();
 
-		this.setState({ isRoomUpdating: true }, async () => {
-			const { roomCode } = this.props;
+		if (updateCounter >= UPDATE_MAXIMUM_RETRIES) {
+			this.setState({ isRoomTimedOut: true });
+		} else {
+			this.setState({ isRoomUpdating: true }, async () => {
+				const { roomCode } = this.props;
 
-			// TODO: Getting all the room data just to update the foundWords list is a little expensive.
-			// Refactor retrieveRoom to accept a list of keys whose values should be returned...?
-			const {
-				data: {
-					retrieveRoom: { foundWords },
-				},
-			} = await API.graphql(graphqlOperation(retrieveRoom, { roomCode }));
+				// TODO: Getting all the room data just to update the foundWords list is a little expensive.
+				// Refactor retrieveRoom to accept a list of keys whose values should be returned...?
+				const {
+					data: {
+						retrieveRoom: { foundWords },
+					},
+				} = await API.graphql(graphqlOperation(retrieveRoom, { roomCode }));
 
-			// Restart the update interval so players who go inactive after guessing
-			// continue to see newly found words.
-			this.setUpdateInterval();
+				this.setState({
+					foundWords,
+					isRoomUpdating: false,
+					updateCounter: updateCounter + 1,
+				});
 
-			this.setState({ foundWords, isRoomUpdating: false });
-		});
+				// Restart the update interval so players who go inactive after guessing
+				// continue to see newly found words.
+				this.setUpdateInterval();
+			});
+		}
 	};
 
 	/**
@@ -180,6 +204,17 @@ class GameRoom extends React.Component {
 		}
 
 		this.setState({ isRoomSubmitting: false });
+	};
+
+	renderTimeoutModal = () => {
+		const { isRoomTimedOut } = this.state;
+
+		return (
+			<Modal isOpen={isRoomTimedOut}>
+				<header>Are you still there?</header>
+				<button onClick={this.resetTimeout}>YES, LET'S PLAY!</button>
+			</Modal>
+		);
 	};
 
 	renderRoomInfo = () => {
@@ -327,6 +362,7 @@ class GameRoom extends React.Component {
 					<LoadingSpinner />
 				) : (
 					<>
+						{this.renderTimeoutModal()}
 						{this.renderRoomInfo()}
 						{this.renderLetters()}
 						{this.renderGuess()}

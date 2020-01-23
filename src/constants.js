@@ -1,8 +1,9 @@
 // Color to use for react-spinners in component
 export const LOADING_COLOR = '#d38b40';
 
-// Time to update a room's data
-export const UPDATE_INTERVAL_MS = 10000;
+// When and how often to update a room's data
+export const UPDATE_INTERVAL_MS = 10000; // Update every ten seconds
+export const UPDATE_MAXIMUM_RETRIES = 90; // Update for fifteen minutes without user response
 
 // Expected results from the Lambda after submitting a guess
 export const INVALID_WORD = 'INVALID_WORD';
