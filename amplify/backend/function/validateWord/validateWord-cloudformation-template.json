@@ -76,7 +76,7 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-letter-potato-develop-121443-deployment",
+					"S3Bucket": "amplify-letter-potato-prod-135936-deployment",
 					"S3Key": "amplify-builds/validateWord-416f7443677a68784375-build.zip"
 				}
 			}
