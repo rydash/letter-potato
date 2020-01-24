@@ -92,7 +92,10 @@ class GameRoom extends React.Component {
 			},
 		} = await API.graphql(graphqlOperation(retrieveRoom, { roomCode }));
 
-		this.setState({ foundWords, isRoomLoading: false, letters });
+		this.setState(
+			{ foundWords, isRoomLoading: false, letters },
+			this.shuffleLetters
+		);
 	};
 
 	/**
