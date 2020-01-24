@@ -93,21 +93,22 @@ class GameRoom extends React.Component {
 		} = await API.graphql(graphqlOperation(retrieveRoom, { roomCode }));
 
 		this.setState(
-			{ foundWords, isRoomLoading: false, letters },
+			{
+				foundWords: this.deserializeWords(foundWords),
+				isRoomLoading: false,
+				letters,
+			},
 			this.shuffleLetters
 		);
 	};
 
 	/**
-	 * Prepares the room for active updates.
-	 * @returns {undefined}
+	 * Converts the stringified Objects from the database
+	 * into actual Objects for the component.
+	 * @param {Array<String>} wordsData Serialized found words data
+	 * @returns {Array<Object>} Deserialized found words data
 	 */
-	resetTimeout = () => {
-		this.setState(
-			{ isRoomTimedOut: false, updateCounter: 0 },
-			this.updateFoundWords
-		);
-	};
+	deserializeWords = wordsData => wordsData.map(entry => JSON.parse(entry));
 
 	/**
 	 * Gets the current list of found words for the current room.
@@ -134,7 +135,7 @@ class GameRoom extends React.Component {
 				} = await API.graphql(graphqlOperation(retrieveRoom, { roomCode }));
 
 				this.setState({
-					foundWords,
+					foundWords: this.deserializeWords(foundWords),
 					isRoomUpdating: false,
 					updateCounter: updateCounter + 1,
 				});
@@ -144,6 +145,17 @@ class GameRoom extends React.Component {
 				this.setUpdateInterval();
 			});
 		}
+	};
+
+	/**
+	 * Prepares the room for active updates.
+	 * @returns {undefined}
+	 */
+	resetTimeout = () => {
+		this.setState(
+			{ isRoomTimedOut: false, updateCounter: 0 },
+			this.updateFoundWords
+		);
 	};
 
 	/**
@@ -174,39 +186,43 @@ class GameRoom extends React.Component {
 	handleSubmit = async event => {
 		event.preventDefault();
 
-		const { currentGuess } = this.state;
+		const { currentGuess, foundWords } = this.state;
 		const { playerName, roomCode } = this.props;
 
 		const submission = { currentGuess, playerName, roomCode };
 
 		this.setState({ isRoomSubmitting: true });
 
-		// TODO: Return early if currentGuess already present in local foundWords.
+		// Check if currentGuess already present in local foundWords.
 		// This should reduce invocations of the validateWord Lambda.
+		const words = foundWords.map(data => data.word);
+		if (words.includes(currentGuess)) {
+			this.setState({ result: OLD_WORD });
+		} else {
+			try {
+				const {
+					data: { validateWord: result },
+				} = await API.graphql(graphqlOperation(validateWord, submission));
 
-		try {
-			const {
-				data: { validateWord: result },
-			} = await API.graphql(graphqlOperation(validateWord, submission));
+				// Update the found words list with a player's new word.
+				const shouldUpdateFoundWords = result !== INVALID_WORD;
 
-			// Update the found words list with a player's new word.
-			const shouldUpdateFoundWords = result !== INVALID_WORD;
+				if (shouldUpdateFoundWords) {
+					await this.updateFoundWords();
+				}
 
-			if (shouldUpdateFoundWords) {
-				await this.updateFoundWords();
+				this.setState({ currentGuess: '', result });
+			} catch (err) {
+				// TODO: Make erroring more pronounced, allow a user to reload and recover
+				console.error(
+					`Error when submitting ${currentGuess} to ${roomCode}`,
+					err
+				);
+				this.setState({ result: ERROR });
 			}
-
-			this.setState({ currentGuess: '', result, submittedGuess: currentGuess });
-		} catch (err) {
-			// TODO: Make erroring more pronounced, allow a user to reload and recover
-			console.error(
-				`Error when submitting ${currentGuess} to ${roomCode}`,
-				err
-			);
-			this.setState({ result: ERROR });
 		}
 
-		this.setState({ isRoomSubmitting: false });
+		this.setState({ isRoomSubmitting: false, submittedGuess: currentGuess });
 	};
 
 	renderTimeoutModal = () => {
@@ -324,14 +340,12 @@ class GameRoom extends React.Component {
 	renderFoundWords = () => {
 		const { foundWords, isRoomUpdating } = this.state;
 
-		const foundWordsData = foundWords.map(wordData => JSON.parse(wordData));
-
 		return (
 			<>
 				<div className="GameRoom-foundWords">
 					<span className="GameRoom-foundWordHeader">Found Words</span>
 					<span className="GameRoom-finderHeader">Finder</span>
-					{foundWordsData
+					{foundWords
 						.sort((a, b) => b.word.length - a.word.length)
 						.map(({ playerName, word }) => (
 							<React.Fragment key={word}>
