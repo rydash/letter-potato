@@ -11,4 +11,6 @@ const LoadingSpinner = () => (
 	</div>
 );
 
+LoadingSpinner.propTypes = {};
+
 export default LoadingSpinner;

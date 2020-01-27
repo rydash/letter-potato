@@ -3,6 +3,8 @@ import './RoomEntry.css';
 import React from 'react';
 import { func, string } from 'prop-types';
 
+import NameEntry from '../NameEntry';
+
 /**
  * A form for a player to enter their name and a room code.
  */
@@ -23,11 +25,10 @@ class RoomEntry extends React.Component {
 			roomCode,
 		} = this.props;
 
-		// TODO: Show remaining character counter opposite NAME label
 		return (
 			<div className="RoomEntry">
 				<form onSubmit={this.handleSubmit}>
-					<fieldset className="RoomEntry-submit">
+					<fieldset className="RoomEntry-entry">
 						<label htmlFor="roomCode">ROOM CODE</label>
 						<input
 							name="roomCode"
@@ -39,21 +40,13 @@ class RoomEntry extends React.Component {
 							required
 							value={roomCode}
 						/>
-						<label htmlFor="playerName">NAME</label>
-						<input
-							name="playerName"
-							type="text"
-							maxLength="12"
-							onChange={onPlayerNameChange}
-							placeholder="ENTER YOUR NAME"
-							required
-							value={playerName}
+						<NameEntry
+							onPlayerNameChange={onPlayerNameChange}
+							playerName={playerName}
 						/>
-						<input
-							type="submit"
-							disabled={roomCode.length < 4 || !playerName}
-							value="PLAY"
-						/>
+						<button type="submit" disabled={roomCode.length < 4 || !playerName}>
+							PLAY
+						</button>
 					</fieldset>
 				</form>
 			</div>

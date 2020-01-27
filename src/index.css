@@ -46,10 +46,6 @@ input[type='submit']:disabled {
 	transition: color 0.5s, background-position 0.5s, box-shadow 0.5s;
 }
 
-header {
-	text-align: center;
-}
-
 input[type='text'] {
 	background-color: #e0e0e0;
 	border: 0 solid;
@@ -70,4 +66,12 @@ label {
 	font-family: Helvetica, 'sans-serif';
 	font-size: 18px;
 	font-weight: 700;
+}
+
+.Modal-header {
+	font-family: Helvetica, 'sans-serif';
+	font-size: 18px;
+	font-weight: 700;
+	margin: 15px auto;
+	text-align: center;
 }

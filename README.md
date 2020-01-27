@@ -23,9 +23,11 @@ existing set of letters plus any words found by other players.
 
 ## This game is a Work In Progress!
 
-This game isn't finished and doesn't look super nice yet!
+This game isn't finished yet!
 Here are the major things under development:
-* Returning to a recently-visited room after refreshing the browser
+* Remembering a player's name between recent refreshes
+* Allowing name and room changes from the game screen
+* Showing room suggestions underneath the room code entry screen
 * Various development chores
     * Adding documentation
     * Adding Jest unit tests

@@ -3,7 +3,7 @@ import './GameRoom.css';
 import { API, graphqlOperation } from 'aws-amplify';
 import React from 'react';
 import Modal from 'react-modal';
-import { string } from 'prop-types';
+import { string, func } from 'prop-types';
 
 import shuffle from 'lodash/shuffle';
 
@@ -11,6 +11,7 @@ import awsconfig from '../aws-exports';
 import { retrieveRoom, validateWord } from '../graphql/mutations';
 
 import LoadingSpinner from '../LoadingSpinner';
+import NameEntry from '../NameEntry';
 
 import {
 	ERROR,
@@ -35,6 +36,7 @@ class GameRoom extends React.Component {
 		this.state = {
 			currentGuess: '',
 			foundWords: [],
+			isPlayerNamed: false,
 			// TODO: Refactor these Booleans into a roomState Object?
 			isRoomLoading: true,
 			isRoomSubmitting: false,
@@ -48,6 +50,11 @@ class GameRoom extends React.Component {
 	}
 
 	async componentDidMount() {
+		const { playerName } = this.props;
+		if (playerName) {
+			this.setState({ isPlayerNamed: true });
+		}
+
 		API.configure(awsconfig);
 		await this.getRoom();
 
@@ -230,7 +237,7 @@ class GameRoom extends React.Component {
 
 		return (
 			<Modal isOpen={isRoomTimedOut}>
-				<header>Are you still there?</header>
+				<header className="Modal-header">Are you still there?</header>
 				<button onClick={this.resetTimeout}>YES, LET'S PLAY!</button>
 			</Modal>
 		);
@@ -371,10 +378,29 @@ class GameRoom extends React.Component {
 	};
 
 	render() {
-		const { isRoomLoading } = this.state;
+		const { isPlayerNamed, isRoomLoading } = this.state;
+		const { onPlayerNameChange, playerName } = this.props;
 
 		return (
 			<div className="GameRoom">
+				<Modal isOpen={!isPlayerNamed}>
+					<form
+						onSubmit={event => {
+							event.preventDefault();
+							this.setState({ isPlayerNamed: true });
+						}}
+					>
+						<fieldset className="GameRoom-entry">
+							<NameEntry
+								onPlayerNameChange={onPlayerNameChange}
+								playerName={playerName}
+							/>
+							<button type="submit" disabled={!playerName}>
+								PLAY
+							</button>
+						</fieldset>
+					</form>
+				</Modal>
 				{isRoomLoading ? (
 					<LoadingSpinner />
 				) : (
@@ -392,8 +418,9 @@ class GameRoom extends React.Component {
 }
 
 GameRoom.propTypes = {
-	playerName: string.isRequired,
-	roomCode: string.isRequired,
+	onPlayerNameChange: func.isRequired,
+	playerName: string,
+	roomCode: string,
 };
 
 export default GameRoom;

@@ -1,16 +1,13 @@
 import './App.css';
 
 import React from 'react';
+import { Router, navigate } from '@reach/router';
 
 import RoomEntry from '../RoomEntry';
 import GameRoom from '../GameRoom';
 
 import { version } from '../../package.json';
 
-// TODO: Maybe this whole component switching can be done with react-router.
-// That way we can do cool things like track room history, use URL
-// slugs to get someone right into a room, and other cool-sounding
-// navigation things.
 /**
  * The root component for Letter Potato.
  * Mounts either the game entry screen or the game room
@@ -22,12 +19,13 @@ class App extends React.Component {
 		this.state = {
 			playerName: '',
 			roomCode: '',
-			roomEntered: false,
 		};
 	}
 
 	handleEnterRoom = () => {
-		this.setState({ roomEntered: true });
+		const { roomCode } = this.state;
+
+		navigate(`/room/${roomCode}`);
 	};
 
 	handlePlayerNameChange = event => {
@@ -39,22 +37,27 @@ class App extends React.Component {
 	};
 
 	render() {
-		const { playerName, roomCode, roomEntered } = this.state;
+		const { playerName, roomCode } = this.state;
 
 		return (
 			<div className="App">
 				<header className="App-header">Letter Potato</header>
-				{roomEntered ? (
-					<GameRoom playerName={playerName} roomCode={roomCode} />
-				) : (
+				<Router>
 					<RoomEntry
+						default
+						path="/"
 						playerName={playerName}
 						roomCode={roomCode}
 						onEnterRoom={this.handleEnterRoom}
 						onPlayerNameChange={this.handlePlayerNameChange}
 						onRoomCodeChange={this.handleRoomCodeChange}
 					/>
-				)}
+					<GameRoom
+						path="room/:roomCode"
+						playerName={playerName}
+						onPlayerNameChange={this.handlePlayerNameChange}
+					/>
+				</Router>
 				<span className="App-version">v{version}</span>
 			</div>
 		);

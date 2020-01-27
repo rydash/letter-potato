@@ -1,3 +1,19 @@
+.GameRoom-entry {
+	border: 0;
+	border-width: 0;
+	box-sizing: border-box;
+	color: #000;
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 15px 15px 0;
+}
+
+.GameRoom-entry label {
+	display: inline-block;
+	margin-bottom: 5px;
+	padding-left: 12px;
+}
+
 .GameRoom-roomInfo {
 	background-color: #505050;
 	box-sizing: border-box;
