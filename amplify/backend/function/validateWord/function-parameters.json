@@ -1,12 +1,19 @@
 {
-    "permissions": {
-        "function": {
-            "retrieveRoom": [
-                "read"
-            ],
-            "saveWord": [
-                "read"
-            ]
-        }
+  "permissions": {
+    "function": {
+      "retrieveRoom": [
+        "read"
+      ],
+      "saveWord": [
+        "read"
+      ]
     }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "letterpotato92ff06c6",
+      "version": 2
+    }
+  ]
 }

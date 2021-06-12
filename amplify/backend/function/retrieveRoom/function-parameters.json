@@ -1,16 +1,23 @@
 {
-    "permissions": {
-        "storage": {
-            "RoomStorage": [
-                "create",
-                "read",
-                "update"
-            ]
-        },
-        "function": {
-            "generateLetters": [
-                "read"
-            ]
-        }
+  "permissions": {
+    "storage": {
+      "RoomStorage": [
+        "create",
+        "read",
+        "update"
+      ]
+    },
+    "function": {
+      "generateLetters": [
+        "read"
+      ]
     }
+  },
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "letterpotato92ff06c6",
+      "version": 3
+    }
+  ]
 }

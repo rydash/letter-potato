@@ -1,7 +1,10 @@
 type Room @model {
+	id: ID
 	roomCode: String!
 	letters: [String]
 	foundWords: [String]
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
 }
 
 type Mutation {

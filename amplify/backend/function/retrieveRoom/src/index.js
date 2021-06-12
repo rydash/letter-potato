@@ -9,12 +9,19 @@ var functionGenerateLettersName = process.env.FUNCTION_GENERATELETTERS_NAME
 Amplify Params - DO NOT EDIT */
 
 const AWS = require('aws-sdk');
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const {
+	DynamoDBDocumentClient,
+	GetCommand,
+	PutCommand,
+} = require('@aws-sdk/lib-dynamodb');
 
 const region = process.env.REGION;
 AWS.config.update({ region });
 
 const storageRoomStorageName = process.env.STORAGE_ROOMSTORAGE_NAME;
-const ddb = new AWS.DynamoDB.DocumentClient();
+const db = new DynamoDBClient({ region });
+const ddb = DynamoDBDocumentClient.from(db);
 const ddbTableName = storageRoomStorageName;
 
 const lambda = new AWS.Lambda({ region });
@@ -43,7 +50,7 @@ exports.handler = async event => {
 
 	let room;
 	try {
-		({ Item: room } = await ddb.get(params).promise());
+		({ Item: room } = await ddb.send(new GetCommand(params)));
 	} catch (err) {
 		throw new Error(`Room retrieval error: ${err}`);
 	}
@@ -87,9 +94,9 @@ async function createRoom(event) {
 	};
 
 	try {
-		await ddb.put(params).promise();
-		// `put` can't return the room it just saved, so we need to go get it
-		const { Item: room } = await ddb.get(params).promise();
+		await ddb.send(new PutCommand(params));
+		// put can't return the room it just saved, so we need to go get it
+		const { Item: room } = ddb.send(new GetCommand(params));
 		return room;
 	} catch (err) {
 		throw new Error(`Room creation error: ${err}`);

@@ -1,98 +1,133 @@
 {
-	"storage": {
-		"RoomStorage": {
-			"service": "DynamoDB",
-			"providerPlugin": "awscloudformation"
-		}
-	},
-	"function": {
-		"generateLetters": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true
-		},
-		"retrieveRoom": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true,
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "RoomStorage",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				},
-				{
-					"category": "function",
-					"resourceName": "generateLetters",
-					"attributes": [
-						"Name"
-					]
-				}
-			]
-		},
-		"saveWord": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true,
-			"dependsOn": [
-				{
-					"category": "storage",
-					"resourceName": "RoomStorage",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				},
-				{
-					"category": "function",
-					"resourceName": "retrieveRoom",
-					"attributes": [
-						"Name"
-					]
-				}
-			]
-		},
-		"validateWord": {
-			"service": "Lambda",
-			"providerPlugin": "awscloudformation",
-			"build": true,
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "retrieveRoom",
-					"attributes": [
-						"Name"
-					]
-				},
-				{
-					"category": "function",
-					"resourceName": "saveWord",
-					"attributes": [
-						"Name"
-					]
-				}
-			]
-		}
-	},
-	"api": {
-		"letterpotato": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "API_KEY",
-						"apiKeyConfig": {
-							"description": "Letter Potato Default API Key",
-							"apiKeyExpirationDays": "30"
-						}
-					}
-				}
-			}
-		}
-	}
+  "storage": {
+    "RoomStorage": {
+      "service": "DynamoDB",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "function": {
+    "generateLetters": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "letterpotato92ff06c6",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "retrieveRoom": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "letterpotato92ff06c6",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "RoomStorage",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "generateLetters",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "saveWord": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "letterpotato92ff06c6",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "RoomStorage",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "retrieveRoom",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "validateWord": {
+      "service": "Lambda",
+      "providerPlugin": "awscloudformation",
+      "build": true,
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "letterpotato92ff06c6",
+          "attributes": [
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "retrieveRoom",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "saveWord",
+          "attributes": [
+            "Name"
+          ]
+        }
+      ]
+    },
+    "letterpotato92ff06c6": {
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true
+    }
+  },
+  "api": {
+    "letterpotato": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 365,
+              "description": "Letter Potato API key"
+            }
+          }
+        }
+      }
+    }
+  }
 }

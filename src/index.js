@@ -1,11 +1,15 @@
 import './index.css';
 
+import Amplify from '@aws-amplify/core';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 
 import App from './App';
+import awsExports from './aws-exports';
 import * as serviceWorker from './serviceWorker';
+
+Amplify.configure(awsExports);
 
 const root = document.getElementById('root');
 

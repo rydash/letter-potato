@@ -1,13 +1,12 @@
 import './GameRoom.css';
 
-import { API, graphqlOperation } from 'aws-amplify';
-import React from 'react';
+import { API, graphqlOperation } from '@aws-amplify/api';
 import Modal from 'react-modal';
+import React from 'react';
 import { string, func } from 'prop-types';
 
 import shuffle from 'lodash/shuffle';
 
-import awsconfig from '../aws-exports';
 import { retrieveRoom, validateWord } from '../graphql/mutations';
 
 import LoadingSpinner from '../LoadingSpinner';
@@ -55,7 +54,6 @@ class GameRoom extends React.Component {
 			this.setState({ isPlayerNamed: true });
 		}
 
-		API.configure(awsconfig);
 		await this.getRoom();
 
 		this.setState({ isRoomLoading: false });
