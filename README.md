@@ -34,7 +34,8 @@ This game isn't finished yet! Here are the major things under development:
 Letter Potato tracks bugs and feature requests using [GitHub
 Issues](https://github.com/rydash/letter-potato/issues). Drop a line there!
 
-Want to fix it yourself? Great! Fork this repo, write some code, and submit a pull request.
+Want to fix it yourself? Great! Fork this repo, write some code, and submit a
+pull request.
 
 ### Dependencies
 Letter Potato was bootstrapped with [Create React
@@ -44,7 +45,7 @@ Amplify](https://aws-amplify.github.io/docs/).
 
 Installing the Amplify CLI is highly encouraged!
 
-Testing AWS Lambdas locally requires Node 14 LTS or higher.
+Testing AWS Lambdas locally requires Node 16 LTS or higher.
 
 ### Building and Deploying
 Deployments occur automatically through the [AWS Amplify

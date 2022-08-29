@@ -1,12 +1,12 @@
 import './App.css';
 
 import React from 'react';
-import { Router, navigate } from '@reach/router';
+import { Router, navigate } from '@gatsbyjs/reach-router';
 
 import RoomEntry from '../RoomEntry';
 import GameRoom from '../GameRoom';
 
-import { version } from '../../package.json';
+import packageInfo from '../../package.json';
 
 /**
  * The root component for Letter Potato.
@@ -58,7 +58,7 @@ class App extends React.Component {
 						onPlayerNameChange={this.handlePlayerNameChange}
 					/>
 				</Router>
-				<span className="App-version">v{version}</span>
+				<span className="App-version">v{packageInfo.version}</span>
 			</div>
 		);
 	}
