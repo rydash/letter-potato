@@ -1,6 +1,6 @@
 import './GameRoom.css';
 
-import { API, graphqlOperation } from '@aws-amplify/api';
+import { API, graphqlOperation } from 'aws-amplify';
 import Modal from 'react-modal';
 import React from 'react';
 import { string, func } from 'prop-types';
