@@ -2,27 +2,30 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Lambda layer resource stack creation using Amplify CLI",
   "Parameters": {
-    "layerVersion": {
-      "Type": "String",
-      "Default": "1"
-    },
     "env": {
+      "Type": "String"
+    },
+    "deploymentBucketName": {
       "Type": "String"
     },
     "s3Key": {
       "Type": "String"
     },
-    "deploymentBucketName": {
-      "Type": "String"
+    "description": {
+      "Type": "String",
+      "Default": ""
+    },
+    "runtimes": {
+      "Type": "List<String>"
     }
   },
   "Resources": {
-    "LambdaLayer": {
+    "LambdaLayerVersione73f144d": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
-        "CompatibleRuntimes": [
-          "nodejs16.x"
-        ],
+        "CompatibleRuntimes": {
+          "Ref": "runtimes"
+        },
         "Content": {
           "S3Bucket": {
             "Ref": "deploymentBucketName"
@@ -32,14 +35,7 @@
           }
         },
         "Description": {
-          "Fn::Sub": [
-            "Lambda layer version ${latestVersion}",
-            {
-              "latestVersion": {
-                "Ref": "layerVersion"
-              }
-            }
-          ]
+          "Ref": "description"
         },
         "LayerName": {
           "Fn::Sub": [
@@ -52,150 +48,133 @@
           ]
         }
       },
-      "DeletionPolicy": "Retain",
+      "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionprivate1": {
+    "LambdaLayerPermissionPrivatee73f144d": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
         "LayerVersionArn": {
-          "Fn::Sub": [
-            "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}-${env}:${layerVersion}",
-            {
-              "layerName": "letterpotato92ff06c6",
-              "env": {
-                "Ref": "env"
-              },
-              "layerVersion": "1"
-            }
-          ]
+          "Ref": "LambdaLayerVersione73f144d"
         },
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerPermissionprivate2": {
+    "LambdaLayerVersione4596e7c": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "CompatibleRuntimes": [
+          "nodejs16.x"
+        ],
+        "Content": {
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": "amplify-builds/letterpotato92ff06c6-LambdaLayerVersione4596e7c-build.zip"
+        },
+        "Description": "Updated layer version 2022-08-30T01:48:53.599Z",
+        "LayerName": {
+          "Fn::Sub": [
+            "letterpotato92ff06c6-${env}",
+            {
+              "env": {
+                "Ref": "env"
+              }
+            }
+          ]
+        }
+      },
+      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "LambdaLayerPermissionPrivatee4596e7c": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": {
-          "Fn::Sub": [
-            "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}-${env}:${layerVersion}",
-            {
-              "layerName": "letterpotato92ff06c6",
-              "env": {
-                "Ref": "env"
-              },
-              "layerVersion": "2"
-            }
-          ]
-        },
+        "LayerVersionArn": "arn:aws:lambda:us-west-2:877829129823:layer:letterpotato92ff06c6-prod:10",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerPermissionprivate3": {
+    "LambdaLayerPermissionPrivateLegacy9": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": {
-          "Fn::Sub": [
-            "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}-${env}:${layerVersion}",
-            {
-              "layerName": "letterpotato92ff06c6",
-              "env": {
-                "Ref": "env"
-              },
-              "layerVersion": "3"
-            }
-          ]
-        },
+        "LayerVersionArn": "arn:aws:lambda:us-west-2:877829129823:layer:letterpotato92ff06c6-prod:9",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerPermissionprivate4": {
+    "LambdaLayerPermissionPrivateLegacy7": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": {
-          "Fn::Sub": [
-            "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}-${env}:${layerVersion}",
-            {
-              "layerName": "letterpotato92ff06c6",
-              "env": {
-                "Ref": "env"
-              },
-              "layerVersion": "4"
-            }
-          ]
-        },
+        "LayerVersionArn": "arn:aws:lambda:us-west-2:877829129823:layer:letterpotato92ff06c6-prod:7",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerPermissionprivate5": {
+    "LambdaLayerPermissionPrivateLegacy5": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": {
-          "Fn::Sub": [
-            "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${layerName}-${env}:${layerVersion}",
-            {
-              "layerName": "letterpotato92ff06c6",
-              "env": {
-                "Ref": "env"
-              },
-              "layerVersion": "5"
-            }
-          ]
-        },
+        "LayerVersionArn": "arn:aws:lambda:us-west-2:877829129823:layer:letterpotato92ff06c6-prod:5",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerPermissionprivate6": {
+    "LambdaLayerPermissionPrivateLegacy4": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": {
-          "Ref": "LambdaLayer"
-        },
+        "LayerVersionArn": "arn:aws:lambda:us-west-2:877829129823:layer:letterpotato92ff06c6-prod:4",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
-    }
-  },
-  "Conditions": {
-    "HasEnvironmentParameter": {
-      "Fn::Not": [
-        {
-          "Fn::Equals": [
-            {
-              "Ref": "env"
-            },
-            "NONE"
-          ]
+    },
+    "LambdaLayerPermissionPrivateLegacy3": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:us-west-2:877829129823:layer:letterpotato92ff06c6-prod:3",
+        "Principal": {
+          "Ref": "AWS::AccountId"
         }
-      ]
+      }
+    },
+    "LambdaLayerPermissionPrivateLegacy2": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:us-west-2:877829129823:layer:letterpotato92ff06c6-prod:2",
+        "Principal": {
+          "Ref": "AWS::AccountId"
+        }
+      }
+    },
+    "LambdaLayerPermissionPrivateLegacy1": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:us-west-2:877829129823:layer:letterpotato92ff06c6-prod:1",
+        "Principal": {
+          "Ref": "AWS::AccountId"
+        }
+      }
     }
   },
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayer"
-      }
-    },
-    "Region": {
-      "Value": {
-        "Ref": "AWS::Region"
+        "Ref": "LambdaLayerVersione73f144d"
       }
     }
   }
